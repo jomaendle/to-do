@@ -1,0 +1,9 @@
+to-do/node_modules
+to-do/.idea
+to-do/.vscode
+
+.env
+*.iml
+.idea/
+
+/node_modules
