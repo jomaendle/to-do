@@ -1,7 +1,7 @@
 [build]
 
 command = "CI='' npm run build"
-publish = "../dist/to-do"
+publish = "dist/to-do"
 
 functions = "functions"
 
