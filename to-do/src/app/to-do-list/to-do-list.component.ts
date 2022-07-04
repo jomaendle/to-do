@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToDoItem } from '../to-do-item';
+import { ToDoService } from '../to-do.service';
+import { Observable, startWith, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-to-do-list',
@@ -7,18 +9,20 @@ import { ToDoItem } from '../to-do-item';
   styleUrls: ['./to-do-list.component.scss'],
 })
 export class ToDoListComponent implements OnInit {
-  toDoItems: ToDoItem[] = [
-    {
-      isDone: false,
-      name: 'Buy milk 🥛',
-    },
-    {
-      isDone: false,
-      name: 'Call airport for refund ',
-    },
-  ];
+  toDoItems$: Observable<ToDoItem[]>;
 
-  constructor() {}
+  private _refresh$: Subject<void> = new Subject<void>();
+
+  constructor(private _toDoService: ToDoService) {
+    this.toDoItems$ = this._refresh$.pipe(
+      startWith(''),
+      switchMap(() => this._toDoService.getAllToDoItems())
+    );
+  }
 
   ngOnInit(): void {}
+
+  onItemDeleted(): void {
+    this._refresh$.next();
+  }
 }

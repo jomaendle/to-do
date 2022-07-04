@@ -23,15 +23,15 @@ export class ToDoService {
     return this._httpClient.get<ToDoItem>(`${this._BASE_URL}/${id}`);
   }
 
-  createToDoItem(employee: ToDoItem): Observable<string> {
-    return this._httpClient.post(`${this._BASE_URL}`, employee, {
+  createToDoItem(toDoItem: ToDoItem): Observable<string> {
+    return this._httpClient.post(`${this._BASE_URL}`, toDoItem, {
       responseType: 'text',
     });
   }
 
-  updateToDoItem(id: string, employee: ToDoItem): Observable<string> {
-    console.log(employee);
-    return this._httpClient.put(`${this._BASE_URL}/${id}`, employee, {
+  updateToDoItem(id: string, toDoItem: ToDoItem): Observable<string> {
+    console.log(toDoItem);
+    return this._httpClient.put(`${this._BASE_URL}/${id}`, toDoItem, {
       responseType: 'text',
     });
   }

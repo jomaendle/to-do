@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToDoItem } from '../to-do-item';
 
@@ -9,6 +9,8 @@ import { ToDoItem } from '../to-do-item';
 })
 export class ToDoFormComponent implements OnInit {
   @Input() toDoItem!: ToDoItem;
+
+  @Output() formSubmitted = new EventEmitter<ToDoItem>();
 
   formGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -25,6 +27,9 @@ export class ToDoFormComponent implements OnInit {
   }
 
   onFormSubmit(): void {
-    console.log(this.formGroup.value);
+    this.formSubmitted.emit({
+      name: this.formGroup.get('name')?.value,
+      isDone: false,
+    });
   }
 }

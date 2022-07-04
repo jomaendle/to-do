@@ -1,8 +1,8 @@
 <div class="content">
-  <input type="checkbox" [(ngModel)]="toDoItem.isDone" />
-  <span>{{ toDoItem.name }}</span>
+  <input type="checkbox" [formControl]="toDoListItemFormControl" />
+  <span [class.is-done]="toDoListItemFormControl.value">{{ toDoItem.name }}</span>
 </div>
 
 <div class="actions">
-  <button class="delete-button">Delete</button>
+  <button class="delete-button" (click)="onDeleteClick()">Delete</button>
 </div>

@@ -1,2 +1,3 @@
-<h2>Add To-Do item</h2>
-<app-to-do-form></app-to-do-form>
+<h1>Add To-Do item</h1>
+<button routerLink="/items">⬅ Back to Home</button>
+<app-to-do-form (formSubmitted)="onFormSubmit($event)"></app-to-do-form>

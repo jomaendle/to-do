@@ -1,4 +1,17 @@
-<h1>To Do Items</h1>
-<ng-container *ngFor="let item of toDoItems">
-  <app-to-do-list-item [toDoItem]="item"></app-to-do-list-item>
+<h1>✔️ To Do</h1>
+<ng-container *ngrxLet="toDoItems$; let toDoItems">
+  <ng-container *ngIf="toDoItems && toDoItems.length > 0; else noItems">
+    <ng-container *ngFor="let item of toDoItems$ | async">
+      <app-to-do-list-item
+        [toDoItem]="item"
+        (toDoItemDeleted)="onItemDeleted()"></app-to-do-list-item>
+    </ng-container>
+
+    <button routerLink="/items/new">➕ Add new To Do</button>
+  </ng-container>
 </ng-container>
+
+<ng-template #noItems>
+  <h2>No To Do's yet ☹️</h2>
+  <button routerLink="/items/new">Create your first To Do</button>
+</ng-template>

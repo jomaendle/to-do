@@ -1,0 +1,10 @@
+:host {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  align-self: flex-start;
+  margin-bottom: 2rem;
+}

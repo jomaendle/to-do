@@ -1,16 +1,13 @@
 :host {
-  border: solid 1px;
+  border: solid 1px rgba(30, 30, 30, 0.4);
   padding: 1rem;
   border-radius: 5px;
   cursor: pointer;
   display: flex;
-
-  &.done {
-    background-color: lightcyan;
-  }
+  transition: background 0.1s ease-in-out;
 
   &:hover {
-    border-color: gray;
+    background-color: rgba(30, 30, 30, 0.05);
   }
 
   .content {
@@ -18,6 +15,10 @@
     flex: 1 1 100%;
     align-items: center;
     gap: 0.5rem;
+
+    span.is-done {
+      text-decoration: line-through;
+    }
   }
 
   .actions {
