@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node src/server.ts"
+    "start": "npx ts-node src/server.ts",
+    "build": "cd to-do/ && npm i -g @angular/cli && npm i && ng build --prod && cd .. && npx tsc && netlify-lambda build src/dist/src"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mongodb": "^4.7.0"
+    "mongodb": "^4.7.0",
+    "netlify-lambda": "^2.0.15",
+    "serverless-http": "^3.0.1"
   }
 }

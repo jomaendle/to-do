@@ -6,4 +6,8 @@ to-do/.vscode
 *.iml
 .idea/
 
+src/dist
+
+/functions
+/dist
 /node_modules
