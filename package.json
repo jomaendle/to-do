@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx ts-node src/server.ts",
-    "build": "cd to-do/ && npm i -g @angular/cli && npm i && ng build --prod && cd .. && npx tsc && netlify-lambda build src/dist/src"
+    "build": "cd to-do/ && npm i -g @angular/cli && npm i && ng run to-do:build:production && cd .. && npx tsc && netlify-lambda build src/dist/src"
   },
   "repository": {
     "type": "git",
