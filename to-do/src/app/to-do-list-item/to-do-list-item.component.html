@@ -1,8 +1,15 @@
 <div class="content">
   <input type="checkbox" [formControl]="toDoListItemFormControl" />
-  <span [class.is-done]="toDoListItemFormControl.value">{{ toDoItem.name }}</span>
+  <span
+    #toDoValue
+    [class.is-done]="toDoListItemFormControl.value"
+    [attr.contenteditable]="isInEditMode">
+    {{ toDoItem.name }}</span
+  >
 </div>
 
 <div class="actions">
-  <button class="delete-button" (click)="onDeleteClick()">Delete</button>
+  <button *ngIf="!isInEditMode" class="edit-button" (click)="onEditClick($event)">Edit</button>
+  <button *ngIf="isInEditMode" class="edit-button" (click)="onSaveClick($event)">Save</button>
+  <button class="delete-button" (click)="onDeleteClick($event)">Delete</button>
 </div>

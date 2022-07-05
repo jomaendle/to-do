@@ -1,4 +1,13 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ToDoItem } from '../to-do-item';
 import { ToDoService } from '../to-do.service';
 import { FormControl } from '@angular/forms';
@@ -10,6 +19,8 @@ import { debounceTime, distinctUntilChanged, skip, switchMap, tap } from 'rxjs';
   styleUrls: ['./to-do-list-item.component.scss'],
 })
 export class ToDoListItemComponent implements OnInit {
+  @ViewChild('toDoValue') toDoValue!: ElementRef<HTMLSpanElement>;
+
   @Input() toDoItem!: ToDoItem;
 
   @Output() toDoItemDeleted = new EventEmitter<void>();
@@ -18,8 +29,12 @@ export class ToDoListItemComponent implements OnInit {
 
   @HostListener('click')
   onClick(): void {
-    this.toDoListItemFormControl.setValue(!this.toDoListItemFormControl.value);
+    if (!this.isInEditMode) {
+      this.toDoListItemFormControl.setValue(!this.toDoListItemFormControl.value);
+    }
   }
+
+  isInEditMode: boolean = false;
 
   constructor(private _toDoService: ToDoService) {}
 
@@ -47,7 +62,30 @@ export class ToDoListItemComponent implements OnInit {
     }
   }
 
-  onDeleteClick(): void {
+  onEditClick(event: Event): void {
+    event.stopPropagation();
+    this.isInEditMode = true;
+  }
+
+  onSaveClick(event: Event): void {
+    event.stopPropagation();
+    this.isInEditMode = false;
+
+    this._toDoService
+      .updateToDoItem(this.toDoItem._id || '', {
+        ...this.toDoItem,
+        name: this.toDoValue?.nativeElement.innerText || '',
+        _id: undefined,
+      })
+      .subscribe(() => {
+        console.log('ToDoItem updated');
+        this.toDoItemDeleted.emit();
+      });
+  }
+
+  onDeleteClick(event: Event): void {
+    event.stopPropagation();
+
     this._toDoService.deleteToDoItem(this.toDoItem._id || '').subscribe(() => {
       console.log('ToDoItem deleted');
       this.toDoItemDeleted.emit();
