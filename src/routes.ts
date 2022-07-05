@@ -32,8 +32,8 @@ toDoRouter.get('/:id', async (req, res) => {
 
 toDoRouter.post('/', async (req, res) => {
   try {
-    const employee = req.body;
-    const result = await collections.toDoItems.insertOne(employee);
+    const toDo = req.body;
+    const result = await collections.toDoItems.insertOne(toDo);
 
     if (result.acknowledged) {
       res.status(201).send(`Created new To-Do item: ${result.insertedId}`);

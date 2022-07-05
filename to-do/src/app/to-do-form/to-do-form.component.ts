@@ -13,7 +13,7 @@ export class ToDoFormComponent implements OnInit {
   @Output() formSubmitted = new EventEmitter<ToDoItem>();
 
   formGroup: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   });
 
   constructor() {}

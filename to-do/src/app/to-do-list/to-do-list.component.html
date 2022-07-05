@@ -1,7 +1,8 @@
+<p>Hello AWD</p>
 <h1>✔️ To Do</h1>
 <ng-container *ngrxLet="toDoItems$; let toDoItems">
   <ng-container *ngIf="toDoItems && toDoItems.length > 0; else noItems">
-    <ng-container *ngFor="let item of toDoItems$ | async">
+    <ng-container *ngFor="let item of toDoItems">
       <app-to-do-list-item
         [toDoItem]="item"
         (toDoItemDeleted)="onItemDeleted()"></app-to-do-list-item>
