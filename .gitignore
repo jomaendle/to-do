@@ -1,6 +1,7 @@
 to-do/node_modules
 to-do/.idea
 to-do/.vscode
+to-do/.angular
 
 .env
 *.iml

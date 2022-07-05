@@ -4,9 +4,3 @@ command = "CI='' npm run build"
 publish = "dist/to-do"
 
 functions = "functions"
-
-
-[[redirects]]
-from = "/*"
-to = "dist/to-do/index.html"
-status = 200
