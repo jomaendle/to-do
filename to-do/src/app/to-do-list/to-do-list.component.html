@@ -1,7 +1,8 @@
 <h1>✔️ To Do</h1>
 <ng-container *ngrxLet="toDoItems$; let toDoItems">
   <ng-container *ngIf="toDoItems && toDoItems.length > 0; else noItems">
-    <ng-container *ngFor="let item of toDoItems; let last = last; let first = first">
+    <ng-container
+      *ngFor="let item of toDoItems; let last = last; let first = first; trackBy: trackByFn">
       <app-to-do-list-item
         [isFirst]="first"
         [isLast]="last"

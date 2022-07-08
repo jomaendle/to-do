@@ -22,32 +22,29 @@ export class ToDoListService {
     this._refresh$.next();
   }
 
+  // todo add endpoint to update item position in one request
   updateItemPosition(item: ToDoItem, newPosition: number): Observable<string> {
     return this.toDoItems$.pipe(
       take(1),
       switchMap((toDoItems: ToDoItem[]) => {
-        console.log('%c here', 'color: red', toDoItems, newPosition);
         const otherItem = toDoItems.find((i: ToDoItem) => i.rank === newPosition);
         if (!otherItem) {
           return of(null);
         }
-        otherItem.rank = item.rank;
-
-        console.log(otherItem);
 
         return this._toDoService.updateToDoItem(otherItem._id || '', {
           ...otherItem,
           _id: undefined,
+          rank: item.rank,
         });
       }),
-      switchMap(() => {
-        console.log(item);
-        return this._toDoService.updateToDoItem(item._id || '', {
+      switchMap(() =>
+        this._toDoService.updateToDoItem(item._id || '', {
           ...item,
           _id: undefined,
           rank: newPosition,
-        });
-      }),
+        })
+      ),
       tap(() => this.refreshToDoItems())
     );
   }

@@ -1,10 +1,25 @@
 :host {
+  --height: 40px;
+
   border: solid 1px rgba(30, 30, 30, 0.4);
   padding: 1rem;
   border-radius: 5px;
   cursor: pointer;
   display: flex;
+  gap: 0.5rem;
   transition: background 0.1s ease-in-out;
+  background-color: white;
+  height: var(--height);
+
+  &.animation-up {
+    position: relative;
+    animation: floatBubbleUp 0.2s forwards cubic-bezier(0.13, 1.09, 0.75, 1.02);
+  }
+
+  &.animation-down {
+    position: relative;
+    animation: floatBubbleDown 0.2s forwards cubic-bezier(0.13, 1.09, 0.75, 1.02);
+  }
 
   &:hover {
     background-color: rgba(30, 30, 30, 0.05);
@@ -15,6 +30,14 @@
     flex: 1 1 100%;
     align-items: center;
     gap: 0.5rem;
+    overflow: hidden;
+
+    .to-do-name {
+      min-width: 80px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
     span.is-done {
       text-decoration: line-through;
@@ -44,5 +67,23 @@
         background-color: rgba(30, 30, 30, 0.2);
       }
     }
+  }
+}
+
+@keyframes floatBubbleUp {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: calc((2 * var(--height) + (10px)) * (-1));
+  }
+}
+
+@keyframes floatBubbleDown {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: calc((2 * var(--height) + (10px)));
   }
 }

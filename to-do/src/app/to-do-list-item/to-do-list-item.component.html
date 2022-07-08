@@ -3,6 +3,7 @@
   <input type="checkbox" [formControl]="toDoListItemFormControl" />
   <span
     #toDoValue
+    class="to-do-name"
     [class.is-done]="toDoListItemFormControl.value"
     [attr.contenteditable]="isInEditMode">
     {{ toDoItem.name }}</span

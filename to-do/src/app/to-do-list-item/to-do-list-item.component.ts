@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   OnInit,
@@ -26,7 +27,12 @@ export interface MoveItemAction {
 export class ToDoListItemComponent implements OnInit {
   @ViewChild('toDoValue') toDoValue!: ElementRef<HTMLSpanElement>;
 
-  @Input() toDoItem!: ToDoItem;
+  @Input()
+  set toDoItem(toDoItem: ToDoItem) {
+    this._showAnimationUp = false;
+    this._showAnimationDown = false;
+    this._toDoItem = toDoItem;
+  }
   @Input() isFirst!: boolean;
   @Input() isLast!: boolean;
 
@@ -42,7 +48,24 @@ export class ToDoListItemComponent implements OnInit {
     }
   }
 
+  @HostBinding('class.animation-up')
+  get showAnimationUp(): boolean {
+    return this._showAnimationUp;
+  }
+
+  @HostBinding('class.animation-down')
+  get showAnimationDown(): boolean {
+    return this._showAnimationDown;
+  }
+
   isInEditMode: boolean = false;
+  private _showAnimationUp: boolean = false;
+  private _showAnimationDown: boolean = false;
+
+  get toDoItem(): ToDoItem {
+    return this._toDoItem;
+  }
+  private _toDoItem: ToDoItem = { rank: -1, isDone: false, name: '' };
 
   constructor(private _toDoService: ToDoService) {}
 
@@ -54,8 +77,8 @@ export class ToDoListItemComponent implements OnInit {
         debounceTime(500),
         tap((isDone: boolean) => console.log(isDone)),
         switchMap((isDone: boolean) =>
-          this._toDoService.updateToDoItem(this.toDoItem._id || '', {
-            ...this.toDoItem,
+          this._toDoService.updateToDoItem(this._toDoItem._id || '', {
+            ...this._toDoItem,
             isDone,
             _id: undefined,
           })
@@ -65,19 +88,24 @@ export class ToDoListItemComponent implements OnInit {
         console.log(response);
       });
 
-    if (this.toDoItem) {
-      this.toDoListItemFormControl.setValue(this.toDoItem.isDone);
+    if (this._toDoItem) {
+      this.toDoListItemFormControl.setValue(this._toDoItem.isDone);
     }
   }
 
   onMoveItemClick(event: Event, moveUp: boolean): void {
     event.stopPropagation();
-    const currentRank = this.toDoItem.rank;
+    moveUp ? (this._showAnimationUp = true) : (this._showAnimationDown = true);
+
+    const currentRank = this._toDoItem.rank;
     const newRank = moveUp ? currentRank - 1 : currentRank + 1;
-    this.moveItemClick.emit({
-      item: this.toDoItem,
-      newPosition: newRank,
-    });
+
+    setTimeout(() => {
+      this.moveItemClick.emit({
+        item: this._toDoItem,
+        newPosition: newRank,
+      });
+    }, 100);
   }
 
   onEditClick(event: Event): void {
@@ -90,8 +118,8 @@ export class ToDoListItemComponent implements OnInit {
     this.isInEditMode = false;
 
     this._toDoService
-      .updateToDoItem(this.toDoItem._id || '', {
-        ...this.toDoItem,
+      .updateToDoItem(this._toDoItem._id || '', {
+        ...this._toDoItem,
         name: this.toDoValue?.nativeElement.innerText || '',
         _id: undefined,
       })
@@ -104,7 +132,7 @@ export class ToDoListItemComponent implements OnInit {
   onDeleteClick(event: Event): void {
     event.stopPropagation();
 
-    this._toDoService.deleteToDoItem(this.toDoItem._id || '').subscribe(() => {
+    this._toDoService.deleteToDoItem(this._toDoItem._id || '').subscribe(() => {
       console.log('ToDoItem deleted');
       this.toDoItemDeleted.emit();
     });

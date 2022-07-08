@@ -22,6 +22,10 @@ export class ToDoListComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  trackByFn(index: number, item: ToDoItem): string {
+    return item._id || '';
+  }
+
   onItemDeleted(): void {
     this._toDoListService.refreshToDoItems();
   }

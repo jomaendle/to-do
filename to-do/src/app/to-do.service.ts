@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToDoItem } from './to-do-item';
@@ -6,7 +6,7 @@ import { ToDoItem } from './to-do-item';
 @Injectable({
   providedIn: 'root',
 })
-export class ToDoService {
+export class ToDoService implements OnDestroy {
   private _BASE_URL: string = 'http://localhost:5200/.netlify/functions/server/todos';
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -30,7 +30,6 @@ export class ToDoService {
   }
 
   updateToDoItem(id: string, toDoItem: ToDoItem): Observable<string> {
-    console.log(toDoItem);
     return this._httpClient.put(`${this._BASE_URL}/${id}`, toDoItem, {
       responseType: 'text',
     });
