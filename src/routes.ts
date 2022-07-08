@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as mongodb from 'mongodb';
 import { collections } from './database';
+import { ToDoItem } from '../models/to-do';
 
 export const toDoRouter = express.Router();
 toDoRouter.use(express.json());
@@ -32,11 +33,12 @@ toDoRouter.get('/:id', async (req, res) => {
 
 toDoRouter.post('/', async (req, res) => {
   try {
-    const toDo = req.body;
+    const toDo: ToDoItem = req.body;
+    toDo.rank = await collections.toDoItems.countDocuments();
     const result = await collections.toDoItems.insertOne(toDo);
 
     if (result.acknowledged) {
-      res.status(201).send(`Created new To-Do item: ${result.insertedId}`);
+      res.status(201).send(`Created new To-Do item: ${result}`);
     } else {
       res.status(500).send('Failed to create To-Do item');
     }
@@ -72,7 +74,15 @@ toDoRouter.delete('/:id', async (req, res) => {
   try {
     const id = req?.params?.id;
     const query = { _id: new mongodb.ObjectId(id) };
+    const deletedItem: ToDoItem = await collections.toDoItems.findOne(query);
     const result = await collections.toDoItems.deleteOne(query);
+
+    const allItems = await collections.toDoItems.find({}).toArray();
+
+    for (let i = 0; i < allItems.length; i++) {
+      const newRank = allItems[i].rank < deletedItem.rank ? allItems[i].rank : allItems[i].rank - 1;
+      await collections.toDoItems.updateOne({ _id: allItems[i]._id }, { $set: { rank: newRank } });
+    }
 
     if (result && result.deletedCount) {
       res.status(202).send(`Removed an To-Do item: ID ${id}`);

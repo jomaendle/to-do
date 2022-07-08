@@ -13,6 +13,11 @@ import { ToDoService } from '../to-do.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, skip, switchMap, tap } from 'rxjs';
 
+export interface MoveItemAction {
+  item: ToDoItem;
+  newPosition: number;
+}
+
 @Component({
   selector: 'app-to-do-list-item',
   templateUrl: './to-do-list-item.component.html',
@@ -22,8 +27,11 @@ export class ToDoListItemComponent implements OnInit {
   @ViewChild('toDoValue') toDoValue!: ElementRef<HTMLSpanElement>;
 
   @Input() toDoItem!: ToDoItem;
+  @Input() isFirst!: boolean;
+  @Input() isLast!: boolean;
 
   @Output() toDoItemDeleted = new EventEmitter<void>();
+  @Output() moveItemClick = new EventEmitter<MoveItemAction>();
 
   toDoListItemFormControl: FormControl = new FormControl(false);
 
@@ -60,6 +68,16 @@ export class ToDoListItemComponent implements OnInit {
     if (this.toDoItem) {
       this.toDoListItemFormControl.setValue(this.toDoItem.isDone);
     }
+  }
+
+  onMoveItemClick(event: Event, moveUp: boolean): void {
+    event.stopPropagation();
+    const currentRank = this.toDoItem.rank;
+    const newRank = moveUp ? currentRank - 1 : currentRank + 1;
+    this.moveItemClick.emit({
+      item: this.toDoItem,
+      newPosition: newRank,
+    });
   }
 
   onEditClick(event: Event): void {

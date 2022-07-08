@@ -29,6 +29,11 @@ button {
 
   min-width: 100px;
 
+  &.small {
+    padding: 0.6rem;
+    min-width: 50px;
+  }
+
   &:hover {
     background: rgba(30, 30, 30, 0.08);
   }

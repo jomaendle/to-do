@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToDoItem } from '../to-do-item';
-import { ToDoService } from '../to-do.service';
-import { Observable, startWith, Subject, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { ToDoListService } from './to-do-list.service';
+import { MoveItemAction } from '../to-do-list-item/to-do-list-item.component';
 
 @Component({
   selector: 'app-to-do-list',
@@ -9,20 +10,23 @@ import { Observable, startWith, Subject, switchMap } from 'rxjs';
   styleUrls: ['./to-do-list.component.scss'],
 })
 export class ToDoListComponent implements OnInit {
-  toDoItems$: Observable<ToDoItem[]>;
+  toDoItems$: Observable<ToDoItem[]> = this._toDoListService.toDoItems$.pipe(
+    map((toDoItems: ToDoItem[]) =>
+      toDoItems.sort((a: ToDoItem, b: ToDoItem) => {
+        return a.rank - b.rank;
+      })
+    )
+  );
 
-  private _refresh$: Subject<void> = new Subject<void>();
-
-  constructor(private _toDoService: ToDoService) {
-    this.toDoItems$ = this._refresh$.pipe(
-      startWith(''),
-      switchMap(() => this._toDoService.getAllToDoItems())
-    );
-  }
+  constructor(private _toDoListService: ToDoListService) {}
 
   ngOnInit(): void {}
 
   onItemDeleted(): void {
-    this._refresh$.next();
+    this._toDoListService.refreshToDoItems();
+  }
+
+  onMoveItemClick({ item, newPosition }: MoveItemAction): void {
+    this._toDoListService.updateItemPosition(item, newPosition).subscribe();
   }
 }

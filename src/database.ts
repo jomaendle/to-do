@@ -31,6 +31,10 @@ async function applySchemaValidation(db: mongodb.Db) {
           bsonType: 'bool',
           description: "'isDone' must be a boolean and is required",
         },
+        rank: {
+          bsonType: 'int',
+          description: "'rank' must be an int and is required",
+        },
       },
     },
   };

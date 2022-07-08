@@ -1,10 +1,12 @@
-<p>Hello AWD</p>
 <h1>✔️ To Do</h1>
 <ng-container *ngrxLet="toDoItems$; let toDoItems">
   <ng-container *ngIf="toDoItems && toDoItems.length > 0; else noItems">
-    <ng-container *ngFor="let item of toDoItems">
+    <ng-container *ngFor="let item of toDoItems; let last = last; let first = first">
       <app-to-do-list-item
+        [isFirst]="first"
+        [isLast]="last"
         [toDoItem]="item"
+        (moveItemClick)="onMoveItemClick($event)"
         (toDoItemDeleted)="onItemDeleted()"></app-to-do-list-item>
     </ng-container>
 

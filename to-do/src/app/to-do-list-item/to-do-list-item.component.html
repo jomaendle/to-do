@@ -1,4 +1,5 @@
 <div class="content">
+  <span>{{ toDoItem.rank + 1 }}</span>
   <input type="checkbox" [formControl]="toDoListItemFormControl" />
   <span
     #toDoValue
@@ -9,6 +10,8 @@
 </div>
 
 <div class="actions">
+  <button class="small" [disabled]="isFirst" (click)="onMoveItemClick($event, true)">⬆</button>
+  <button class="small" [disabled]="isLast" (click)="onMoveItemClick($event, false)">⬇</button>
   <button *ngIf="!isInEditMode" class="edit-button" (click)="onEditClick($event)">Edit</button>
   <button *ngIf="isInEditMode" class="edit-button" (click)="onSaveClick($event)">Save</button>
   <button class="delete-button" (click)="onDeleteClick($event)">Delete</button>
