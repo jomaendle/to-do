@@ -1,4 +1,3 @@
-<h1>✔️ To Do</h1>
 <ng-container *ngrxLet="toDoItems$; let toDoItems">
   <ng-container *ngIf="toDoItems && toDoItems.length > 0; else noItems">
     <ng-container
@@ -11,11 +10,11 @@
         (toDoItemDeleted)="onItemDeleted()"></app-to-do-list-item>
     </ng-container>
 
-    <button routerLink="/items/new">➕ Add new To Do</button>
+    <button routerLink="/items/new">➕ {{ 'TODO_LIST.ADD' | translate }}</button>
   </ng-container>
 </ng-container>
 
 <ng-template #noItems>
-  <h2>No To Do's yet ☹️</h2>
-  <button routerLink="/items/new">Create your first To Do</button>
+  <h2>{{ 'TODO_LIST.NO_ITEMS' | translate }}☹️</h2>
+  <button routerLink="/items/new">{{ 'TODO_LIST.CREATE' | translate }}</button>
 </ng-template>

@@ -11,9 +11,27 @@
 </div>
 
 <div class="actions">
-  <button class="small" [disabled]="isFirst" (click)="onMoveItemClick($event, true)">⬆</button>
-  <button class="small" [disabled]="isLast" (click)="onMoveItemClick($event, false)">⬇</button>
-  <button *ngIf="!isInEditMode" class="edit-button" (click)="onEditClick($event)">Edit</button>
-  <button *ngIf="isInEditMode" class="edit-button" (click)="onSaveClick($event)">Save</button>
-  <button class="delete-button" (click)="onDeleteClick($event)">Delete</button>
+  <button
+    class="small"
+    [disabled]="isFirst"
+    [title]="'TODO_LIST.MOVE_UP' | translate"
+    (click)="onMoveItemClick($event, true)">
+    ⬆
+  </button>
+  <button
+    class="small"
+    [disabled]="isLast"
+    [title]="'TODO_LIST.MOVE_DOWN' | translate"
+    (click)="onMoveItemClick($event, false)">
+    ⬇
+  </button>
+  <button *ngIf="!isInEditMode" class="edit-button" (click)="onEditClick($event)">
+    {{ 'TODO_LIST.EDIT' | translate }}
+  </button>
+  <button *ngIf="isInEditMode" class="edit-button" (click)="onSaveClick($event)">
+    {{ 'TODO_LIST.SAVE' | translate }}
+  </button>
+  <button class="delete-button" (click)="onDeleteClick($event)">
+    {{ 'TODO_LIST.DELETE' | translate }}
+  </button>
 </div>

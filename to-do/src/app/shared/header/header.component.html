@@ -1,0 +1,12 @@
+<div class="left">
+  <div class="title-wrapper">
+    <h1>✔️ {{ (title$ | async) ?? '' | translate }}</h1>
+    <p>{{ 'HEADER.SUBTITLE' | translate }}</p>
+  </div>
+</div>
+<div class="right">
+  <button class="small theme-switch" (click)="onThemeButtonClick()">
+    {{ isLightMode ? '🌑' : '🌕' }}
+  </button>
+  <app-language-switch></app-language-switch>
+</div>

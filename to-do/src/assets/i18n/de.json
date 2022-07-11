@@ -1,0 +1,23 @@
+{
+  "HEADER": {
+    "TITLE": "To Do",
+    "SUBTITLE": "Verwalte deine täglichen Aufgaben",
+    "ADD_TODO": "Neues To-Do hinzufügen"
+  },
+  "TODO_LIST": {
+    "ADD": "Neues To-Do hinzufügen",
+    "CREATE": "Erstelle dein erstes To Do",
+    "DELETE": "Löschen",
+    "SAVE": "Speichern",
+    "EDIT": "Bearbeiten",
+    "MOVE_UP": "To-Do nach oben schieben",
+    "MOVE_DOWN": "To-Do nach unten schieben",
+    "NO_ITEMS": "Noch keine To-Dos vorhanden"
+  },
+  "TODO_FORM": {
+    "TODO_NAME": "To-Do Name",
+    "NAME": "Name",
+    "SAVE": "Speichern",
+    "BACK_HOME": "Zurück zum Start"
+  }
+}

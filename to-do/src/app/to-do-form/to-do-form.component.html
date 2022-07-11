@@ -1,8 +1,13 @@
 <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
   <div class="name-input">
-    <label for="name">To-Do name</label>
-    <input type="text" name="name" id="name" placeholder="name" formControlName="name" />
+    <label for="name">{{ 'TODO_FORM.TODO_NAME' | translate }}</label>
+    <input
+      type="text"
+      name="name"
+      id="name"
+      [placeholder]="'TODO_FORM.NAME' | translate"
+      formControlName="name" />
   </div>
 
-  <button type="submit" [disabled]="formGroup.invalid">Save</button>
+  <button type="submit" [disabled]="formGroup.invalid">{{ 'TODO_FORM.SAVE' | translate }}</button>
 </form>

@@ -1,0 +1,23 @@
+{
+  "HEADER": {
+    "TITLE": "To Do",
+    "SUBTITLE": "Manage your daily tasks",
+    "ADD_TODO": "Add new To Do"
+  },
+  "TODO_LIST": {
+    "ADD": "Add new To Do",
+    "CREATE": "Create your first To Do",
+    "DELETE": "Delete",
+    "SAVE": "Save",
+    "EDIT": "Edit",
+    "MOVE_UP": "Move To Do up",
+    "MOVE_DOWN": "Move To Do down",
+    "NO_ITEMS": "No To Do's yet"
+  },
+  "TODO_FORM": {
+    "TODO_NAME": "To Do name",
+    "NAME": "Name",
+    "SAVE": "Save",
+    "BACK_HOME": "Back to Home"
+  }
+}

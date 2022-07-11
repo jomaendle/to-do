@@ -13,6 +13,7 @@ import { ToDoItem } from '../to-do-item';
 import { ToDoService } from '../to-do.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, skip, switchMap, tap } from 'rxjs';
+import { HeaderService } from '../shared/header/header.service';
 
 export interface MoveItemAction {
   item: ToDoItem;
@@ -67,7 +68,9 @@ export class ToDoListItemComponent implements OnInit {
   }
   private _toDoItem: ToDoItem = { rank: -1, isDone: false, name: '' };
 
-  constructor(private _toDoService: ToDoService) {}
+  constructor(private _toDoService: ToDoService, private _headerService: HeaderService) {
+    this._headerService.headerTitle = 'HEADER.TITLE';
+  }
 
   ngOnInit(): void {
     this.toDoListItemFormControl.valueChanges

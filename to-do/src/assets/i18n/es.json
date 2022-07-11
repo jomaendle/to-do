@@ -1,0 +1,23 @@
+{
+  "HEADER": {
+    "TITLE": "Lista de tareas por hacer",
+    "SUBTITLE": "Gestiona tus tareas diarias",
+    "ADD_TODO": "Agregar nueva tarea"
+  },
+  "TODO_LIST": {
+    "ADD": "Agregar nueva tarea",
+    "CREATE": "Crea tu primera tarea",
+    "DELETE": "Eliminar",
+    "SAVE": "Ahorrar",
+    "EDIT": "Editar",
+    "MOVE_UP": "Ascender",
+    "MOVE_DOWN": "Abajo",
+    "NO_ITEMS": "Aún no hay elementos"
+  },
+  "TODO_FORM": {
+    "TODO_NAME": "Nombre de la tarea",
+    "NAME": "Nombre",
+    "SAVE": "Ahorrar",
+    "BACK_HOME": "De vuelta al principio"
+  }
+}

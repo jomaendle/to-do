@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToDoFormComponent } from './to-do-form.component';
+import { LanguageSwitchComponent } from './language-switch.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ToDoFormComponent],
+  declarations: [LanguageSwitchComponent],
+  exports: [LanguageSwitchComponent],
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
-  exports: [ToDoFormComponent],
 })
-export class ToDoFormModule {}
+export class LanguageSwitchModule {}

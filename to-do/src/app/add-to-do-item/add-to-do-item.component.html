@@ -1,3 +1,2 @@
-<h1>Add To-Do item</h1>
-<button routerLink="/items">⬅ Back to Home</button>
+<button routerLink="/items">⬅ {{ 'TODO_FORM.BACK_HOME' | translate }}</button>
 <app-to-do-form (formSubmitted)="onFormSubmit($event)"></app-to-do-form>

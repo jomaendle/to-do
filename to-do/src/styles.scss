@@ -2,12 +2,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
 :root {
-  --primary-700: #1976d2;
-  --primary-600: #1e88e5;
-  --primary-500: #2196f3;
-  --primary-400: #42a5f5;
-  --primary-300: #64b5f6;
-  --neutral: white;
+  --background-primary: #fafafa;
+
+  --primary-hover: rgba(var(--neutral-rgb), 0.08);
+  --primary-active: rgba(var(--neutral-rgb), 0.11);
+  --primary-disabled: rgba(var(--neutral-rgb), 0.15);
+
+  --background-secondary: rgba(var(--neutral-rgb), 0.25);
+  --background-tertiary: rgba(var(--neutral-rgb), 0.15);
+
+  --border-color: rgba(30, 30, 30, 0.4);
+
+  --neutral-rgb: 30, 30, 30;
+  --neutral: rgb(var(--neutral-rgb));
 }
 
 html,
@@ -15,6 +22,25 @@ body {
   font-family: 'Lato', sans-serif;
   margin: 0;
   height: 100%;
+
+  color: var(--neutral);
+  background-color: var(--background-primary);
+
+  &.dark-theme {
+    --neutral-rgb: 244, 243, 247;
+    --neutral: rgb(--neutral-rgb);
+    --background-primary: rgb(30, 32, 32);
+    --background-secondary: rgba(var(--neutral-rgb), 0.65);
+    --background-tertiary: rgba(var(--neutral-rgb), 0.75);
+
+    --primary-hover: rgba(var(--neutral-rgb), 0.5);
+    --primary-active: rgba(var(--neutral-rgb), 0.4);
+    --primary-disabled: rgba(var(--neutral-rgb), 0.35);
+
+    --border-color: rgba(200, 200, 200, 0.4);
+
+    color: rgba(var(--neutral-rgb), 1);
+  }
 }
 
 button {
@@ -25,7 +51,7 @@ button {
   cursor: pointer;
   transition: background 0.1s ease-in-out;
 
-  background: rgba(30, 30, 30, 0.15);
+  background: var(--background-tertiary);
 
   min-width: 100px;
 
@@ -35,15 +61,15 @@ button {
   }
 
   &:hover {
-    background: rgba(30, 30, 30, 0.08);
+    background: var(--primary-hover);
   }
 
   &:active {
-    background: rgba(30, 30, 30, 0.11);
+    background: var(--primary-active);
   }
 
   &:disabled {
-    background: rgba(30, 30, 30, 0.15);
+    background: var(--primary-active);
     cursor: not-allowed;
   }
 }
