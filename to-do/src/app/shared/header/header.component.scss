@@ -1,8 +1,8 @@
 :host {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 0.3rem 1rem 0.5rem;
+  background: rgba(var(--neutral-rgb), 0.15);
+  padding: 1rem;
 
   .left {
     flex: 1 1 100%;

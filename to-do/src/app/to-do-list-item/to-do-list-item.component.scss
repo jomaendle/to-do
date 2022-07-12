@@ -61,11 +61,11 @@
       background: none;
 
       &:hover {
-        background-color: var(--primary-hover);
+        background-color: rgba(red, 0.15);
       }
 
       &:active {
-        background-color: var(--primary-active);
+        background-color: rgba(red, 0.1);
       }
     }
   }

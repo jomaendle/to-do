@@ -8,6 +8,8 @@ enum Language {
   'ES' = 'es',
 }
 
+const preferredLanguageKey: string = 'preferredLanguage';
+
 @Component({
   selector: 'app-language-switch',
   templateUrl: './language-switch.component.html',
@@ -20,11 +22,22 @@ export class LanguageSwitchComponent implements OnInit {
 
   languageFormControl = new FormControl(Language.EN, Validators.required);
 
-  constructor(private _translateService: TranslateService) {}
+  constructor(private _translateService: TranslateService) {
+    const preferredLanguage: string = localStorage.getItem(preferredLanguageKey) || '';
+    const typedLanguage = preferredLanguage as Language;
+
+    if (preferredLanguage) {
+      this.languageFormControl.setValue(typedLanguage);
+      this._translateService.use(typedLanguage);
+    }
+  }
 
   ngOnInit(): void {
     this.languageFormControl.valueChanges.subscribe((language: Language | null) => {
-      language && this._translateService.use(language);
+      if (language) {
+        this._translateService.use(language);
+        localStorage.setItem(preferredLanguageKey, language);
+      }
     });
   }
 }
