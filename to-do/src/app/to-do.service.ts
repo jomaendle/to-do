@@ -7,7 +7,7 @@ import { ToDoItem } from './to-do-item';
   providedIn: 'root',
 })
 export class ToDoService implements OnDestroy {
-  private _BASE_URL: string = 'http://localhost:5200/.netlify/functions/server/todos';
+  private _BASE_URL: string = '/.netlify/functions/server/todos';
   private _destroy$: Subject<void> = new Subject<void>();
 
   headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
