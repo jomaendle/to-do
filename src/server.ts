@@ -14,7 +14,7 @@ if (!ATLAS_URI) {
   throw new Error('ATLAS_URI must be defined');
 }
 
-connectToDatabase(ATLAS_URI)
+exports.handler = connectToDatabase(ATLAS_URI)
   .then(() => {
     const app = express();
     const apiRoute = '/.netlify/functions/server/todos';
