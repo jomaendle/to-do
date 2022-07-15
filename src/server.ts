@@ -16,9 +16,10 @@ if (!ATLAS_URI) {
   throw new Error('ATLAS_URI must be defined');
 }
 
+const app = express();
+
 connectToDatabase(ATLAS_URI)
   .then(() => {
-    const app = express();
     const apiRoute = '/.netlify/functions/server/todos';
     app.use(cors());
 
@@ -30,9 +31,9 @@ connectToDatabase(ATLAS_URI)
     });
 
     console.log('Connected to Database');
-
-    module.exports.handler = serverless(app);
   })
   .catch((err) => {
     console.error(err);
   });
+
+module.exports.handler = serverless(app);
