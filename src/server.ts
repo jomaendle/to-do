@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
-import { connectToDatabase } from '../database';
 import * as path from 'path';
 import { toDoRouter } from '../routes';
 
+const connectToDatabase = require('../database');
 const serverless = require('serverless-http');
 
 // Load environment variables from .env file
@@ -19,8 +19,12 @@ if (!ATLAS_URI) {
 connectToDatabase(ATLAS_URI)
   .then(() => {
     console.log('Connected to Database');
+    // start Express server
+    app.listen(5200, () => {
+      console.log('Server started on port 5200!');
+    });
   })
-  .catch((err) => {
+  .catch((err: any) => {
     console.error(err);
   });
 
@@ -30,9 +34,6 @@ app.use(cors());
 
 // Add routes
 app.use(apiRoute, toDoRouter);
-// start Express server
-app.listen(5200, () => {
-  console.log('Server started on port 5200!');
-});
 
+module.exports = app;
 module.exports.handler = serverless(app);

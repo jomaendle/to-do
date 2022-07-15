@@ -5,7 +5,7 @@ export const collections: {
   toDoItems?: mongodb.Collection<ToDoItem>;
 } = {};
 
-export async function connectToDatabase(uri: string) {
+async function connectToDatabase(uri: string) {
   const client = new mongodb.MongoClient(uri);
   await client.connect();
 
@@ -52,3 +52,5 @@ async function applySchemaValidation(db: mongodb.Db) {
       }
     });
 }
+
+module.exports = connectToDatabase;
