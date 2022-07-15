@@ -8,7 +8,7 @@ toDoRouter.use(express.json());
 
 toDoRouter.get('/', async (req, res) => {
   try {
-    const toDoItems = await collections.toDoItems.find({}).toArray();
+    const toDoItems = await collections?.toDoItems?.find({}).toArray();
     res.status(200).send(toDoItems);
   } catch (err) {
     res.status(500).send(err.message);
