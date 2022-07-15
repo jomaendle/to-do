@@ -1,5 +1,5 @@
 import * as mongodb from 'mongodb';
-import { ToDoItem } from '../models/to-do';
+import { ToDoItem } from './models/to-do';
 
 export const collections: {
   toDoItems?: mongodb.Collection<ToDoItem>;

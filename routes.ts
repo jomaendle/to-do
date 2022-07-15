@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as mongodb from 'mongodb';
 import { collections } from './database';
-import { ToDoItem } from '../models/to-do';
+import { ToDoItem } from './models/to-do';
 
 export const toDoRouter = express.Router();
 toDoRouter.use(express.json());
