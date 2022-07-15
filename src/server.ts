@@ -16,6 +16,14 @@ if (!ATLAS_URI) {
   throw new Error('ATLAS_URI must be defined');
 }
 
+connectToDatabase(ATLAS_URI)
+  .then(() => {
+    console.log('Connected to Database');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
 const app = express();
 const apiRoute = '/.netlify/functions/server/todos';
 app.use(cors());
@@ -26,13 +34,5 @@ app.use(apiRoute, toDoRouter);
 app.listen(5200, () => {
   console.log('Server started on port 5200!');
 });
-
-connectToDatabase(ATLAS_URI)
-  .then(() => {
-    console.log('Connected to Database');
-  })
-  .catch((err) => {
-    console.error(err);
-  });
 
 module.exports.handler = serverless(app);
