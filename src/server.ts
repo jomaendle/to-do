@@ -18,18 +18,18 @@ if (!ATLAS_URI) {
 const app = express();
 const apiRoute = '/.netlify/functions/server/todos';
 
-app.use(cors());
-
-// Add routes
-app.use(apiRoute, toDoRouter);
-
-// start Express server
-app.listen(5200, () => {
-  console.log('Server started on port 5200!');
-});
-
 connectToDatabase(ATLAS_URI)
   .then(() => {
+    app.use(cors());
+
+    // Add routes
+    app.use(apiRoute, toDoRouter);
+
+    // start Express server
+    app.listen(5200, () => {
+      console.log('Server started on port 5200!');
+    });
+
     console.log('Connected to Database');
   })
   .catch((err) => {
