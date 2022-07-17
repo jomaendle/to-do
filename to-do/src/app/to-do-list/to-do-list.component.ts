@@ -11,6 +11,7 @@ import { MoveItemAction } from '../to-do-list-item/to-do-list-item.component';
 })
 export class ToDoListComponent implements OnInit {
   toDoItems$: Observable<ToDoItem[]> = this._toDoListService.toDoItems$.pipe(
+    map((toDoItems: ToDoItem[]) => (toDoItems ? toDoItems.filter((item: ToDoItem) => !!item) : [])),
     map((toDoItems: ToDoItem[]) =>
       toDoItems.sort((a: ToDoItem, b: ToDoItem) => {
         return a.rank - b.rank;

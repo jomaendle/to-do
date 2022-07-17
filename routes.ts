@@ -1,14 +1,24 @@
 import * as express from 'express';
 import * as mongodb from 'mongodb';
-import { collections } from './database';
 import { ToDoItem } from './models/to-do';
+import { Db, MongoClient } from 'mongodb';
+import * as dotenv from 'dotenv';
+import path from 'path';
 
 export const toDoRouter = express.Router();
 toDoRouter.use(express.json());
 
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+const mongoClient: MongoClient = new MongoClient(process.env.ATLAS_URI);
+const clientPromise: Promise<MongoClient> = mongoClient.connect();
+
 toDoRouter.get('/', async (req, res) => {
   try {
-    const toDoItems = await collections?.toDoItems?.find({}).toArray();
+    const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection(process.env.MONGODB_COLLECTION);
+    const toDoItems = await collection.find({}).toArray();
     res.status(200).send(toDoItems);
   } catch (err) {
     res.status(500).send(err.message);
@@ -19,7 +29,9 @@ toDoRouter.get('/:id', async (req, res) => {
   try {
     const id = req?.params?.id;
     const query = { _id: new mongodb.ObjectId(id) };
-    const toDoItem = await collections.toDoItems.findOne(query);
+    const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection(process.env.MONGODB_COLLECTION);
+    const toDoItem = await collection.findOne(query);
 
     if (!toDoItem) {
       res.status(404).send(`To-Do item not found: ID: ${id}`);
@@ -34,8 +46,11 @@ toDoRouter.get('/:id', async (req, res) => {
 toDoRouter.post('/', async (req, res) => {
   try {
     const toDo: ToDoItem = req.body;
-    toDo.rank = await collections.toDoItems.countDocuments();
-    const result = await collections.toDoItems.insertOne(toDo);
+    const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection(process.env.MONGODB_COLLECTION);
+
+    toDo.rank = await collection.countDocuments();
+    const result = await collection.insertOne(toDo);
 
     if (result.acknowledged) {
       res.status(201).send(`Created new To-Do item: ${result}`);
@@ -53,7 +68,11 @@ toDoRouter.put('/:id', async (req, res) => {
     const id = req?.params?.id;
     const toDoItem = req.body;
     const query = { _id: new mongodb.ObjectId(id) };
-    const result = await collections.toDoItems.updateOne(query, {
+
+    const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection(process.env.MONGODB_COLLECTION);
+
+    const result = await collection.updateOne(query, {
       $set: toDoItem,
     });
 
@@ -74,14 +93,17 @@ toDoRouter.delete('/:id', async (req, res) => {
   try {
     const id = req?.params?.id;
     const query = { _id: new mongodb.ObjectId(id) };
-    const deletedItem: ToDoItem = await collections.toDoItems.findOne(query);
-    const result = await collections.toDoItems.deleteOne(query);
+    const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection(process.env.MONGODB_COLLECTION);
 
-    const allItems = await collections.toDoItems.find({}).toArray();
+    const deletedItem: any = await collection.findOne(query);
+    const result = await collection.deleteOne(query);
+
+    const allItems = await collection.find({}).toArray();
 
     for (let i = 0; i < allItems.length; i++) {
       const newRank = allItems[i].rank < deletedItem.rank ? allItems[i].rank : allItems[i].rank - 1;
-      await collections.toDoItems.updateOne({ _id: allItems[i]._id }, { $set: { rank: newRank } });
+      await collection.updateOne({ _id: allItems[i]._id }, { $set: { rank: newRank } });
     }
 
     if (result && result.deletedCount) {
