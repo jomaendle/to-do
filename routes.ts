@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as mongodb from 'mongodb';
+import { AnyBulkWriteOperation, Db, MongoClient } from 'mongodb';
 import { ToDoItem } from './models/to-do';
-import { Db, MongoClient } from 'mongodb';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
@@ -96,21 +96,31 @@ toDoRouter.delete('/:id', async (req, res) => {
     const database: Db = (await clientPromise).db(process.env.MONGODB_DATABASE);
     const collection = database.collection(process.env.MONGODB_COLLECTION);
 
-    const deletedItem: any = await collection.findOne(query);
-    const result = await collection.deleteOne(query);
-
+    const deletedItem: any = await collection.findOneAndDelete(query);
     const allItems = await collection.find({}).toArray();
 
-    for (let i = 0; i < allItems.length; i++) {
-      const newRank = allItems[i].rank < deletedItem.rank ? allItems[i].rank : allItems[i].rank - 1;
-      await collection.updateOne({ _id: allItems[i]._id }, { $set: { rank: newRank } });
+    const bulkArray: AnyBulkWriteOperation[] = [];
+    if (allItems?.length > 0) {
+      allItems.forEach((d, i) => {
+        const newRank =
+          allItems[i].rank < deletedItem.value.rank ? allItems[i].rank : allItems[i].rank - 1;
+
+        bulkArray.push({
+          updateOne: {
+            filter: { _id: allItems[i]._id },
+            update: { $set: { rank: newRank } },
+            upsert: true,
+          },
+        });
+      });
+      await collection.bulkWrite(bulkArray, { ordered: true });
     }
 
-    if (result && result.deletedCount) {
+    if (deletedItem) {
       res.status(202).send(`Removed an To-Do item: ID ${id}`);
-    } else if (!result) {
+    } else if (!deletedItem) {
       res.status(400).send(`Failed to remove an To-Do item: ID ${id}`);
-    } else if (!result.deletedCount) {
+    } else if (!deletedItem.deletedCount) {
       res.status(404).send(`Failed to find an To-Do item: ID ${id}`);
     }
   } catch (error) {
