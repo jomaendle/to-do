@@ -9,11 +9,25 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ToDoItem } from '../to-do-item';
-import { ToDoService } from '../to-do.service';
+import { ToDoItem } from '../../to-do-item';
+import { ToDoService } from '../../to-do.service';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, skip, switchMap, tap } from 'rxjs';
-import { HeaderService } from '../shared/header/header.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  of,
+  ReplaySubject,
+  skip,
+  startWith,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { HeaderService } from '../../shared/header/header.service';
+import { DropDownItem } from '../../shared/dropdown-button/dropdown-button.component';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface MoveItemAction {
   item: ToDoItem;
@@ -34,8 +48,16 @@ export class ToDoListItemComponent implements OnInit {
     this._showAnimationDown = false;
     this._toDoItem = toDoItem;
   }
-  @Input() isFirst!: boolean;
-  @Input() isLast!: boolean;
+  @Input()
+  set isFirst(isFirst: boolean) {
+    console.log(isFirst);
+    this._isFirst$.next(isFirst);
+  }
+
+  @Input()
+  set isLast(isLast: boolean) {
+    this._isLast$.next(isLast);
+  }
 
   @Output() toDoItemDeleted = new EventEmitter<void>();
   @Output() moveItemClick = new EventEmitter<MoveItemAction>();
@@ -59,7 +81,28 @@ export class ToDoListItemComponent implements OnInit {
     return this._showAnimationDown;
   }
 
+  dropdownItems: DropDownItem[] = [];
+
   isInEditMode: boolean = false;
+
+  private _isFirst$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+
+  get isFirst$(): Observable<boolean> {
+    return this._isFirst$.asObservable();
+  }
+
+  private _isLast$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+
+  get isLast$(): Observable<boolean> {
+    return this._isLast$.asObservable();
+  }
+
+  private _isInEditMode$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+
+  get isInEditMode$(): Observable<boolean> {
+    return this._isInEditMode$.asObservable().pipe(startWith(false));
+  }
+
   private _showAnimationUp: boolean = false;
   private _showAnimationDown: boolean = false;
 
@@ -68,7 +111,11 @@ export class ToDoListItemComponent implements OnInit {
   }
   private _toDoItem: ToDoItem = { rank: -1, isDone: false, name: '' };
 
-  constructor(private _toDoService: ToDoService, private _headerService: HeaderService) {
+  constructor(
+    private _toDoService: ToDoService,
+    private _headerService: HeaderService,
+    private _translateService: TranslateService
+  ) {
     this._headerService.headerTitle = 'HEADER.TITLE';
   }
 
@@ -94,13 +141,57 @@ export class ToDoListItemComponent implements OnInit {
     if (this._toDoItem) {
       this.toDoListItemFormControl.setValue(this._toDoItem.isDone);
     }
+
+    this.dropdownItems = [
+      {
+        value$: this._translateService.get('TODO_LIST.MOVE_UP'),
+        callback: (event) => {
+          console.log(this.isFirst);
+          this.onMoveItemClick(event, true);
+        },
+        disabled$: this.isFirst$,
+        icon: '⬆',
+      },
+      {
+        value$: this._translateService.get('TODO_LIST.MOVE_DOWN'),
+        callback: (event) => this.onMoveItemClick(event, true),
+        disabled$: this.isLast$,
+        icon: '⬇',
+      },
+      {
+        value$: this._translateService.get('TODO_LIST.EDIT'),
+        callback: (event) => {
+          console.log('edit', this.isInEditMode);
+          this.onEditClick(event);
+        },
+        disabled$: this.isInEditMode$,
+        icon: '✎',
+      },
+      {
+        value$: this._translateService.get('TODO_LIST.SAVE'),
+        callback: (event) => this.onSaveClick(event),
+        disabled$: this.isInEditMode$.pipe(map((value: boolean) => !value)),
+        icon: '✓',
+      },
+      {
+        value$: this._translateService.get('TODO_LIST.DELETE'),
+        callback: (event) => this.onDeleteClick(event),
+        icon: '✖',
+      },
+    ];
   }
 
   onMoveItemClick(event: Event, moveUp: boolean): void {
     event.stopPropagation();
-    moveUp ? (this._showAnimationUp = true) : (this._showAnimationDown = true);
 
     const currentRank = this._toDoItem.rank;
+
+    if (currentRank - 1 < 0) {
+      return;
+    }
+
+    moveUp ? (this._showAnimationUp = true) : (this._showAnimationDown = true);
+
     const newRank = moveUp ? currentRank - 1 : currentRank + 1;
 
     setTimeout(() => {
@@ -114,11 +205,17 @@ export class ToDoListItemComponent implements OnInit {
   onEditClick(event: Event): void {
     event.stopPropagation();
     this.isInEditMode = true;
+    this._isInEditMode$.next(true);
   }
 
   onSaveClick(event: Event): void {
     event.stopPropagation();
+    if (!this.isInEditMode) {
+      return;
+    }
+
     this.isInEditMode = false;
+    this._isInEditMode$.next(false);
 
     this._toDoService
       .updateToDoItem(this._toDoItem._id || '', {

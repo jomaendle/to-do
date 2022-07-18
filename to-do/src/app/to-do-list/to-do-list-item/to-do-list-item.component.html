@@ -13,14 +13,14 @@
 <div class="actions">
   <button
     class="small"
-    [disabled]="isFirst"
+    [disabled]="isFirst$ | async"
     [title]="'TODO_LIST.MOVE_UP' | translate"
     (click)="onMoveItemClick($event, true)">
     ⬆
   </button>
   <button
     class="small"
-    [disabled]="isLast"
+    [disabled]="isLast$ | async"
     [title]="'TODO_LIST.MOVE_DOWN' | translate"
     (click)="onMoveItemClick($event, false)">
     ⬇
@@ -34,4 +34,10 @@
   <button class="delete-button" (click)="onDeleteClick($event)">
     {{ 'TODO_LIST.DELETE' | translate }}
   </button>
+</div>
+
+<div class="mobile-menu" (click)="$event.stopPropagation()">
+  <app-dropdown-button [items]="dropdownItems" [classNames]="['dropdown']">
+    <img class="icon-menu" src="assets/icons/more_vertical.svg" />
+  </app-dropdown-button>
 </div>

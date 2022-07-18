@@ -28,7 +28,7 @@
 
   .content {
     display: flex;
-    flex: 1 1 100%;
+    flex: 1 0 auto;
     align-items: center;
     gap: 0.5rem;
     overflow: hidden;
@@ -49,6 +49,7 @@
       border: solid 1px rgba(30, 30, 30, 0.3);
       background-color: white;
       border-radius: 5px;
+      color: rgb(25, 25, 25);
     }
   }
 
@@ -69,6 +70,18 @@
       }
     }
   }
+
+  .mobile-menu {
+    padding: 0px;
+
+    .icon-menu {
+      height: 30px;
+    }
+  }
+}
+
+.dropdown {
+  background: red;
 }
 
 @keyframes floatBubbleUp {
@@ -86,5 +99,23 @@
   }
   100% {
     top: calc((2 * var(--height) + (10px)));
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    border: none;
+    border-bottom: solid 1px var(--border-color);
+    border-radius: 0;
+
+    .actions {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .mobile-menu {
+    display: none;
   }
 }

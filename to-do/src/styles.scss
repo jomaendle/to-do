@@ -88,3 +88,17 @@ input[type='text'] {
     border-color: rgba(30, 30, 30, 0.2);
   }
 }
+
+.dropdown {
+  width: 40px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  button {
+    padding: 0.9rem 1.8rem;
+    font-size: 0.9rem;
+    min-width: 24px;
+  }
+}

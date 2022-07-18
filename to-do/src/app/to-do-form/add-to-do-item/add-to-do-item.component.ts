@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ToDoItem } from '../to-do-item';
-import { ToDoService } from '../to-do.service';
+import { ToDoItem } from '../../to-do-item';
+import { ToDoService } from '../../to-do.service';
 import { Router } from '@angular/router';
-import { HeaderService } from '../shared/header/header.service';
+import { HeaderService } from '../../shared/header/header.service';
 
 @Component({
   selector: 'app-add-to-do-item',

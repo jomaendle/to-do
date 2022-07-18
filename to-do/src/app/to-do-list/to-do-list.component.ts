@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToDoItem } from '../to-do-item';
 import { map, Observable } from 'rxjs';
 import { ToDoListService } from './to-do-list.service';
-import { MoveItemAction } from '../to-do-list-item/to-do-list-item.component';
+import { MoveItemAction } from './to-do-list-item/to-do-list-item.component';
 
 @Component({
   selector: 'app-to-do-list',

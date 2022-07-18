@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ToDoListComponent } from './to-do-list/to-do-list.component';
-import { AddToDoItemComponent } from './add-to-do-item/add-to-do-item.component';
-import { EditToDoItemComponent } from './edit-to-do-item/edit-to-do-item.component';
+import { AddToDoItemComponent } from './to-do-form/add-to-do-item/add-to-do-item.component';
+import { EditToDoItemComponent } from './to-do-form/edit-to-do-item/edit-to-do-item.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'items', pathMatch: 'full' },

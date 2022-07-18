@@ -1,0 +1,39 @@
+:host {
+  position: relative;
+
+  button {
+    padding: 4px;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    right: 0;
+    top: 30px;
+
+    padding: 0.2rem 1rem;
+    background-color: var(--background-primary);
+    color: var(--neutral);
+    z-index: 9999;
+    min-width: 180px;
+    border: solid 1px #2a584d;
+    border-radius: 9px;
+    box-shadow: 0 5px 10px #8f8f8f73;
+
+    .dropdown-item {
+      padding: 0.8rem 0;
+      border-bottom: solid 1px #23ffcd;
+
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      span.icon {
+        font-size: 1.3rem;
+      }
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  }
+}

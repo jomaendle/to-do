@@ -8,3 +8,14 @@
 button {
   align-self: flex-start;
 }
+
+@media screen and (max-width: 768px) {
+  :host {
+    gap: 0;
+    padding: 0;
+  }
+
+  .add-button {
+    margin: 2rem 1rem;
+  }
+}

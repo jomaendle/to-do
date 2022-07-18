@@ -1,0 +1,14 @@
+<button (click)="toggleDropdown()" [ngClass]="classNames">
+  <ng-content></ng-content>
+</button>
+<div *ngIf="showDropdown" #dropdown class="dropdown-content">
+  <ng-container *ngFor="let item of items">
+    <div
+      *ngIf="(item.disabled$ | async) === false || !item.disabled$"
+      class="dropdown-item"
+      (click)="item.callback($event)">
+      <span *ngIf="item.icon" class="icon">{{ item.icon }}</span>
+      <span>{{ item.value$ ? (item.value$ | async) : item.value ? item.value : '' }}</span>
+    </div>
+  </ng-container>
+</div>
