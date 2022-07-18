@@ -28,6 +28,7 @@ import {
 import { HeaderService } from '../../shared/header/header.service';
 import { DropDownItem } from '../../shared/dropdown-button/dropdown-button.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ThemePalette } from '@angular/material/core';
 
 export interface MoveItemAction {
   item: ToDoItem;
@@ -83,6 +84,7 @@ export class ToDoListItemComponent implements OnInit {
 
   dropdownItems: DropDownItem[] = [];
 
+  color: ThemePalette = 'primary';
   isInEditMode: boolean = false;
 
   private _isFirst$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
@@ -150,13 +152,13 @@ export class ToDoListItemComponent implements OnInit {
           this.onMoveItemClick(event, true);
         },
         disabled$: this.isFirst$,
-        icon: '⬆',
+        icon: 'move_up',
       },
       {
         value$: this._translateService.get('TODO_LIST.MOVE_DOWN'),
-        callback: (event) => this.onMoveItemClick(event, true),
+        callback: (event) => this.onMoveItemClick(event, false),
         disabled$: this.isLast$,
-        icon: '⬇',
+        icon: 'move_down',
       },
       {
         value$: this._translateService.get('TODO_LIST.EDIT'),
@@ -165,18 +167,18 @@ export class ToDoListItemComponent implements OnInit {
           this.onEditClick(event);
         },
         disabled$: this.isInEditMode$,
-        icon: '✎',
+        icon: 'edit',
       },
       {
         value$: this._translateService.get('TODO_LIST.SAVE'),
         callback: (event) => this.onSaveClick(event),
         disabled$: this.isInEditMode$.pipe(map((value: boolean) => !value)),
-        icon: '✓',
+        icon: 'save',
       },
       {
         value$: this._translateService.get('TODO_LIST.DELETE'),
         callback: (event) => this.onDeleteClick(event),
-        icon: '✖',
+        icon: 'delete',
       },
     ];
   }
@@ -186,13 +188,15 @@ export class ToDoListItemComponent implements OnInit {
 
     const currentRank = this._toDoItem.rank;
 
-    if (currentRank - 1 < 0) {
+    if (moveUp && currentRank - 1 < 0) {
       return;
     }
 
     moveUp ? (this._showAnimationUp = true) : (this._showAnimationDown = true);
 
     const newRank = moveUp ? currentRank - 1 : currentRank + 1;
+
+    console.log('new rank', newRank);
 
     setTimeout(() => {
       this.moveItemClick.emit({

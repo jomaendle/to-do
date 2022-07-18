@@ -38,6 +38,8 @@
 
 <div class="mobile-menu" (click)="$event.stopPropagation()">
   <app-dropdown-button [items]="dropdownItems" [classNames]="['dropdown']">
-    <img class="icon-menu" src="assets/icons/more_vertical.svg" />
+    <button [color]="color" mat-icon-button aria-label="Menu button">
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </app-dropdown-button>
 </div>

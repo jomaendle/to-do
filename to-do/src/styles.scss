@@ -1,3 +1,39 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$to-do-primary: mat.define-palette(mat.$indigo-palette);
+$to-do-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$to-do-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$to-do-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $to-do-primary,
+      accent: $to-do-accent,
+      warn: $to-do-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($to-do-theme);
+
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 
@@ -100,5 +136,50 @@ input[type='text'] {
     padding: 0.9rem 1.8rem;
     font-size: 0.9rem;
     min-width: 24px;
+  }
+}
+
+/**
+Material Menu overwrite
+ */
+div.mat-menu-panel {
+  border: none;
+  background: none;
+  border-radius: 0;
+}
+
+.mat-menu-content {
+  padding: 0.2rem 0.4rem;
+  background-color: var(--background-primary);
+  color: var(--neutral);
+  border: solid 1px #2a584d;
+  border-radius: 9px;
+  box-shadow: 0 5px 10px #8f8f8f73;
+
+  button {
+    color: var(--neutral);
+    display: flex;
+    align-items: center;
+
+    mat-icon.icon {
+      color: var(--neutral);
+    }
+  }
+
+  .dropdown-item {
+    padding: 0.8rem 0;
+    border-bottom: solid 1px #23ffcd;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    span.icon {
+      font-size: 1.3rem;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
   }
 }
